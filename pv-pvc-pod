@@ -1,0 +1,70 @@
+----------pod deployment
+apiVersion: v1
+kind: Pod
+metadata:
+  name: task-pv-pod
+spec:
+  volumes:
+    - name: aws-pvc-axiom
+      persistentVolumeClaim:
+        claimName: axiom-pvc
+  containers:
+    - name: task-pv-container
+      image: nginx
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: aws-pvc-axiom
+		  
+-----------------------------persistentvolumeclaim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    app: axiom
+  name: aws-pvc-axiom-b
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: gp2
+  volumeMode: Filesystem
+  volumeName: aws-pv-axiom-b
+-------------------------------persistent volume  
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: aws-pv-axiom-b
+spec:
+  accessModes:
+  - ReadWriteOnce
+  awsElasticBlockStore:
+    fsType: xfs
+    volumeID: aws://ap-south-1b/vol-006a752e7016430a2
+  capacity:
+    storage: 30Gi
+  claimRef:
+    apiVersion: v1
+    kind: PersistentVolumeClaim
+    name: axiom-pvc
+    namespace: default
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: gp2
+  volumeMode: Filesystem
+  
+-------------------------Storage class
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: gp2
+parameters:
+  fsType: ext4
+  type: gp2
+provisioner: kubernetes.io/aws-ebs
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
+
