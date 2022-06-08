@@ -1,0 +1,853 @@
+
+
+CKS
+-------Ingress using helm
+helm3 install ingress-nginx ingress-nginx/ingress-nginx --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-internal"='"true"'
+kubectl --namespace default get services -o wide -w ingress-nginx-controller
+
+EKS:(AWS)
+https://ec2.us-east-1.amazonaws.com
+https://eks.us-east-1.amazonaws.com
+https://cloudformation.us-east-1.amazonaws.com
+https://api.ecr.us-east-1.amazonaws.com
+https://602401143452.dkr.ecr.us-east-1.amazonaws.com
+
+https://9F511FDB7157A373B9A0B24C728C32D8.gr7.us-east-1.eks.amazonaws.com
+
+
+
+install helm and execute below commands:
+1. helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/
+2. helm install --name ingress-nginx ingress-nginx/ingress-nginx --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-internal"='"true"'
+
+https://docs.bitnami.com/tutorials/create-your-first-helm-chart/  (link to understand helm)
+ helm install --dry-run ashu --debug ./ashuchart --set service.internalPort=8080
+-------------------azure aks 
+
+az login --tenant
+az account set --subscription 0b8a1b73-7bce-48d4-987a-58b1e6f121ac
+az aks get-credentials --resource-group cpfnocfdrgaks01 --name cdhnomrdaiaks01
+
+command to update AKS TAG
+Application kubernetes
+ISTO_Containers Azure-AKS
+
+az tag create --resource-id  subscriptions/44e9e920-1cd2-4f96-94cc-a8fe57412287/resourceGroups/109651Spoke/providers/Microsoft.ContainerService/managedClusters/cpfnomiaaiaks02 --tags Application=kubernetese ISTO_Containers=Azure-AKS CR=CHG0717864
+
+
+kubectl debug node/aks-agentpool-13277716-vmss000004 -it --image=mcr.microsoft.com/aks/fundamental/base-ubuntu:v18.04.6
+
+$ kubectl debug node/aks-nodepool1-12345678-vmss000000 -it --image=mcr.microsoft.com/aks/fundamental/base-ubuntu:v0.0.11
+
+kubectl debug node/aks-nodepool2-33722056-vmss000002 -it --image=mcr.microsoft.com/aks/fundamental/base-ubuntu:18.04.6
+
+
+AKS_ID=$(az aks show \
+    --resource-group myResourceGroup \
+    --name myAKSCluster \
+    --query id -o tsv)
+	
+APPDEV_ID=$(az ad group create --display-name appdev --mail-nickname appdev --query objectId -o tsv)
+
+az role assignment create \
+  --assignee $APPDEV_ID \
+  --role "Azure Kubernetes Service Cluster User Role" \
+  --scope $AKS_ID
+
+echo "Please enter the UPN for application developers: " && read AAD_DEV_UPN
+aksdev@contoso.com the UPN must include the verified domain name of your tenant, for example aksdev@contoso.com.
+echo "Please enter the secure password for application developers: " && read AAD_DEV_PW
+
+AKSDEV_ID=$(az ad user create \
+  --display-name "AKS Dev" \
+  --user-principal-name $AAD_DEV_UPN \
+  --password $AAD_DEV_PW \
+  --query objectId -o tsv)
+az ad group member add --group appdev --member-id $AKSDEV_ID
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: dev-user-access
+  namespace: dev
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: dev-user-full-access
+subjects:
+- kind: Group
+  namespace: dev
+  name: groupObjectId
+------------
+
+kubectl config get-contexts
+kubectl config use-context aws-986795526901-cio-dev-nag-cio-dev-nag
+
+
+ECR (elastic container registry full access) IAM
+AmazonEC2ContainerRegistryFullAccess
+
+Rancher test
+https://ranchertest.ng.accentureanalytics.com/g/clusters
+
+note on course curriculum
+https://github.com/mmumshad/kubernetes-the-hard-way
+Reference Notes for lectures and labs
+https://github.com/kodekloudhub/certified-kubernetes-administrator-course
+
+Tags to be applied: https://in.accenture.com/protectingaccenture/is-to-operations/compliance/job-aids/
+AWS:
+Add Tag Key as "ISTO_Appliances" / "ISTO_Containers" Value = Name of the resources (Eg: MyVPNBOX or AWS-EKS)
+
+ 
+
+Azure:
+Add Tag Name as "ISTO_Appliances" / "ISTO_Containers" Value = Name of the resources (Eg: MyVPNBOX or Azure-AKS)
+
+ 
+
+GCP:
+Add Tag Key as "isto_appliances" / "isto_containers" Value = Name of the resources (Eg: MyVPNBOX or gcp-gke)
+
+EKS access document link:
+
+https://aws.amazon.com/premiumsupport/knowledge-center/amazon-eks-cluster-access/
+
+aws eks --region us-east-1 update-kubeconfig --name aws-331250110191-bicuedsdpseks01
+    ~/.kube/config
+kubectl edit cm aws-auth -n kube-system
+kubectl describe cm aws-auth -n kube-system
+
+Edited
+
+
+- userarn: arn:aws:iam::331250110191:user/xxxxxxx
+      username: xxxxxxxxx
+      groups:
+        - system:masters
+----------EKS cluster custom policy
+{
+    "Version": "2012-10-17",
+    "Statement": {
+        "Sid": "45345354354",
+        "Effect": "Allow",
+        "Action": [
+            "eks:*"
+        ],
+        "Resource": "*"
+    }
+}
+
+
+---------
+  mapRoles: |
+    - groups:
+      - system:bootstrappers
+      - system:nodes
+      rolearn: arn:aws:iam::331250110191:role/aws-331250110191-bicuedsdpseks01-NodeInstanceRole-1UUQP6FTXNIYP
+      username: system:node:{{EC2PrivateDNSName}}
+  mapUsers: |
+    - userarn: arn:
+      username: 
+      groups:
+        - system:masters
+
+-------------------------------nagios
+/usr/local/nagios/etc/xi_export
+sshpass -p "iGu75c0cm1o7otGV"  scp -v -r -o StrictHostKeyChecking=no -P 443 'ngc-AIP-LIVINGPOC@10.254.251.188:/incoming/nagioscore/hostgroups.cfg' .
+
+adqnoappaikum01)Private IP: 10.171.20.169
+(adqnoappaimad01)Private IP: 10.171.23.121
+
+adqnoappaikum02 - 10.171.20.4  us-east-1a
+---------------
+
+Kubernetes Cluster   
+
+AWS - ACCOUNT_ID:414231577917
+Domain: cndqp.local
+ENV_ID":107841
+ROM_ID":107867
+CIDR":10.171.16.0/21
+
+Passwd: Acc12345%%
+Domain: cndqp.local
+
+aws-414231577917-adqnoappaikum02
+
+docker rm -f $(docker ps -qa)
+docker rmi -f $(docker images -q)
+docker volume rm $(docker volume ls -q)
+
+for mount in $(mount | grep tmpfs | grep '/var/lib/kubelet' | awk '{ print $3 }') /var/lib/kubelet /var/lib/rancher; do umount $mount; done
+
+rm -rf /etc/ceph \
+       /etc/cni \
+       /etc/kubernetes \
+       /opt/cni \
+       /opt/rke \
+       /run/secrets/kubernetes.io \
+       /run/calico \
+       /run/flannel \
+       /var/lib/calico \
+	   /var/lib/canal \
+       /var/lib/etcd \
+       /var/lib/cni \
+       /var/lib/kubelet \
+       /var/lib/rancher/rke/log \
+       /var/log/containers \
+       /var/log/kube-audit \
+       /var/log/pods \
+       /var/run/calico \
+	   /var/run/canal \
+	   /run/canal
+	   ----------
+	   
+#!/bin/bash
+
+docker rm -f $(docker ps -qa)
+
+docker volume rm $(docker volume ls -q)
+
+cleanupdirs="/var/lib/etcd /etc/kubernetes /etc/cni /opt/cni /var/lib/cni /var/run/calico /opt/rke /var/run/canal"
+
+for dir in $cleanupdirs; do
+
+  echo "Removing $dir"
+
+  rm -rf $dir
+
+done
+---
+TASK0073293,CHG0538684
+
+
+
+i-0a1843073dc4c2d30 (TEST)Private IP: 10.171.35.110
+https://confluence.dev.accentureanalytics.com/display/AD/AIP+Docker
+
+Rancher Configuration Video access link
+
+sg-02504f785bd6b0a8a (EKS-IBCPROD_Cluster
+sg-0d135f217ce5bd24d (k8s-elb-a982a7aa10ede4960b3dd9f849ec0180
+sg-05b7d3a8ad3848168 (ahap-multitenant-eks1-eks-worker-nodes-NodeSecurityGroup-159VT4JWZHY52
+
+-----
+curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.17.0/bin/linux/amd64/kubectl
+chmod a+x kubectl
+
+video link
+https://myoffice.accenture.com/:v:/r/personal/p_satyanarayan_patro_accenture_com/Documents/Attachments/AIP/Enablement/Parts%20and%20details/Rancher/Rancher_Lafarge.mp4?csf=1&e=pdPmZS
+
+			CPU Limit	CPUReservation	MemeoryLimit	Memory Reservation
+Symantec	2500			1500		3072			512
+Syslog		2500			500			2048			512
+SFTP		1500			300			777				384
+
+sftp -P 2222 sftpuser1@localhost
+/root/aipscripts/linux_container_ad_join.sh (to jon sftp to ad)	
+eks1-
+https://myoffice.accenture.com/:v:/g/personal/p_satyanarayan_patro_accenture_com/EX1F0m0Ul79Gr-4Vkztjx_IBsUC-0j2WrFcm9TreVk0dDg?email=ashutosh.ae.kumar%40accenture.com&e=zaMM1Z
+
+aws eks --region region-code update-kubeconfig --name cluster_name
+
+aws eks --region eu-west-1 update-kubeconfig --name aws-468174221777-bpceucrpaieks01
+
+aws eks --region us-east-1 update-kubeconfig --name digitaltwin-eks
+
+aws eks --region us-east-1 update-cluster-version --name digitaltwin-eks --kubernetes-version 1.18
+eksctl upgrade cluster --name digitaltwin-eks --approve
+----------
+kubectl get pods --all-namespaces
+
+kubectl delete pod syslog-0 -n syslog-ns   (to delete a pod)  ,after deleting it will launch new pod with same name.
+
+Configure ingress l4 loadbalancer
+
+To disable core file generation
+0(root@vmmcbcnapkum01 /)$ systemctl stop auoms
+0(root@vmmcbcnapkum01 /)$ systemctl disable auoms
+----------------------------------
+export DESIRED_VERSION=v2.16.10
+curl -L https://storage.googleapis.com/kubernetes-helm/helm-${DESIRED_VERSION}-linux-amd64.tar.gz| tar xzv
+mv linux-amd64/helm /usr/local/bin/helm
+kubectl -n kube-system create serviceaccount tiller
+kubectl create clusterrolebinding tiller --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+export TILLER_NAMESPACE=kube-system
+helm init --service-account tiller
+
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx/
+
+helm install --name ingress-nginx ingress-nginx/ingress-nginx --set controller.service.annotations."service\.beta\.kubernetes\.io/aws-load-balancer-internal"='"true"'
+
+
+kubectl --namespace default get services -o wide -w ingress-nginx-controller
+
+
+
+
+how to add EFS
+https://confluence.dev.accentureanalytics.com/display/AD/AWS+EFS+Storage+in+Kubernetes+with+nfs-provisioner
+-----------------------------------
+aws eks --region us-east-1 update-kubeconfig --name aws-936902236608-eks-ahap-test
+aws eks --region us-east-1 update-kubeconfig --name c-trn66
+    ~/.kube/config
+kubectl edit cm aws-auth -n kube-system
+kubectl describe cm aws-auth -n kube-system
+
+EKS Instance type change
+https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html
+
+  mapUsers: |
+    - arn:aws:iam::067078202349:user/sam.nelson@accenture.com
+      username: sam.nelson
+      groups:
+        - system:masters
+
+10.61.6.221,10.61.6.231,10.61.6.116
+
+
+---------
+kubectl version --short
+kubectl get pods --all-namespaces
+kubectl get nodes -o wide
+~/.kube/config
+-------redhat base url:
+https://forums.docker.com/t/docker-ce-stable-x86-64-repo-not-available-https-error-404-not-found-https-download-docker-com-linux-centos-7server-x86-64-stable-repodata-repomd-xml/98965/5
+
+sed -i 's/$releasever/7/g' /etc/yum.repos.d/docker-ce.repo
+
+EKS UPgrade
+To update EKS control plane - https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html
+To update self-managed-node group -  https://docs.aws.amazon.com/eks/latest/userguide/update-stack.html
+
+7198398
+----kubecltl command to enable logs
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.4.1/components.yaml
+
+Restore cluster
+https://github.com/mmumshad/kubernetes-the-hard-way/blob/master/practice-questions-answers/cluster-maintenance/backup-etcd/etcd-backup-and-restore.md
+---------------------
+-----------------------------------
+-----------------------
+EKS upgrade document (1.14 to 1.17)
+https://github.com/awsdocs/amazon-eks-user-guide/blob/8868454807c2b092409e8861108ac4c9b9137066/doc_source/update-cluster.md
+(1.13 to 1.14)
+https://github.com/awsdocs/amazon-eks-user-guide/blob/2de361227bfa484734b0be7887159a225e8bec60/doc_source/update-cluster.md
+
+core dns upgrade
+https://github.com/awsdocs/amazon-eks-user-guide/blob/8868454807c2b092409e8861108ac4c9b9137066/doc_source/coredns.md
+AMI details
+https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html
+
+CNI plugin troubleshooting
+https://aws.amazon.com/premiumsupport/knowledge-center/eks-cni-plugin-troubleshooting/
+
+I have summarised the series of events to be followed to upgrade the cluster to EKS 1.18 [2-3]:
+
+  1. Upgrade the Control Plane to 1.14 using the AWS CLI:
+      $ aws eks update-cluster-version --name c-trn66 --kubernetes-version 1.14 --region us-east-1
+    Update kube-proxy to 1.14.9
+    Update the VPC CNI to 1.7.5
+    Update CoreDNS to 1.6.6
+    Run tests against apps in the cluster to ensure they are still working as expected
+
+  2. Upgrade the Control Plane to 1.15 using the EKS console or the AWS CLI:
+      $ aws eks update-cluster-version --name c-trn66 --kubernetes-version 1.15 --region us-east-1
+    Update kube-proxy to 1.15.12
+    Create a new node group with 1.15 worker nodes [4-5]
+    Drain the old self-managed 1.13 node group and then delete it [6]
+    Run tests against apps in the cluster to ensure they are still working as expected
+
+  3. ** Review the pre-requisites of upgrading to Kubernetes 1.16 and ensure that they are met [7] **
+    Upgrade the Control Plane to 1.16 using the EKS console or the AWS CLI:
+      $ aws eks update-cluster-version --name c-trn66 --kubernetes-version 1.16 --region us-east-1
+    Update kube-proxy to 1.16.15
+    Run tests against apps in the cluster to ensure they are still working as expected
+
+  4. Upgrade the Control Plane to 1.17 using the EKS console or the AWS CLI:
+      $ aws eks update-cluster-version --name c-trn66 --kubernetes-version 1.17 --region us-east-1
+    Update kube-proxy to 1.17.12
+    Update the node group to 1.17 [8]
+    Run tests against apps in the cluster to ensure they are still working as expected
+
+  5. Upgrade the Control Plane to 1.18 using the EKS console or the AWS CLI:
+      $ aws eks update-cluster-version --name c-trn66 --kubernetes-version 1.18 --region us-east-1
+    Update kube-proxy to 1.18.9
+    Update CoreDNS to 1.7.0
+    Update the node group to 1.18 [8]
+    Run tests against apps in the cluster to ensure they are still working as expected
+
+
+
+aws eks --region us-east-1 update-kubeconfig --name c-trn66
+Active
+aws eks --region us-east-1 update-kubeconfig --name ws-936902236608-eks-tmhp-prod
+
+1)need to upgrade the controlplane 
+aws eks update-cluster-version --name c-trn66 --kubernetes-version 1.15 --region us-east-1
+
+vol-090751572c0dc5923	/dev/xvda	200
+https://github.com/awsdocs/amazon-eks-user-guide/blob/8868454807c2b092409e8861108ac4c9b9137066/doc_source/update-cluster.md
+2)we have to update coredns,kubeproxy,amazon cni plugin
+
+[1] Updating a Cluster: https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html  
+[2] Self-managed node updates: https://docs.aws.amazon.com/eks/latest/userguide/update-workers.html  
+[3] Kubernetes version and version skew support policy: https://kubernetes.io/docs/setup/release/version-skew-policy/  
+[4] Amazon EKS optimized Amazon Linux AMIs: https://docs.aws.amazon.com/eks/latest/userguide/eks-optimized-ami.html  
+[5] Deprecated APIs Removed In 1.16: Here’s What You Need To Know: https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/   
+
+
+
+
+
+kubectl get daemonset kube-proxy --namespace kube-system -o=jsonpath='{$.spec.template.spec.containers[:1].image}'
+
+kubectl set image daemonset.apps/kube-proxy \
+  -n kube-system \
+  kube-proxy=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/kube-proxy:v1.14.9-eksbuild.1
+  
+kubectl get pod -n kube-system -l k8s-app=kube-dns 
+kubectl describe deployment coredns --namespace kube-system | grep Image | cut -d "/" -f 3
+
+
+kubectl describe daemonset aws-node --namespace kube-system | grep Image | cut -d "/" -f 2
+
+kube-dns to coredns
+
+https://github.com/awsdocs/amazon-eks-user-guide/blob/8868454807c2b092409e8861108ac4c9b9137066/doc_source/coredns.md
+
+COREDNS_POD=$(kubectl get pod -n kube-system -l eks.amazonaws.com/component=coredns \
+> -o jsonpath='{.items[0].metadata.name}')
+
+kubectl scale -n kube-system deployment/kube-dns --replicas=0
+
+ami-0fc7c80d4d288ab2c   (ami x86 v1.14 us-eat-1)
+----------------------------------------------------------------------
+eks-ibc-prod
+
+Client id: 1120
+Env id: 104126
+
+you have to set bootstrap script to add node to cluster
+--apiserver-endpoint https://97E4410AC7B7550A3BBE2A1A47FB5AD2.sk1.us-east-1.eks.amazonaws.com --b64-cluster-ca LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRFNU1EUXhOVEU0TVRZME9Wb1hEVEk1TURReE1qRTRNVFkwT1Zvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTUVkClNrY0FsbTNpNDJYOERNV3g5UjlWTm5CZjc4Mlp3MUh1eTVqMHAzRU05S21IWTZ2NVQzQXNYWUxWVDkvenpUTlEKbGNIZkNPVjJYbTV0dHI4dm1COUJJRXpiUytOVUs3RzRJaTNVNUlBU0U3cldITm1oOFE2bEJMczVjT3pUa3krdQoyMVVrM2U0bzZQVm0zOXhLd2tlWURtT2F5bkkyWURPdnRFck5RWHYwb2ZaelFUb0dISzc2dkFYRmpDNnZheUZiCmdUN0dJemFDaEkxMkRhT0twVkYxbE9ONTdXblMwSWtpbTI2RTcvbmdDaFhiWG82WEhNYWZudWN1a3l5Z2RvNXAKZFNQd3VkdUprdzBKdkJsOVR4L21wcSs0dHZsdGlJYzlWSTlsY2xUU2Q3RUwwNXRUT1hwNURIbEMrRTY3dHlCTQozVTRhdmxFNW9IOHhwSERTMGJzQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFEcnY5VEdOcWlDam5NcURSb2JFSlo3ZTJ0bjMKREExRXlvRmZVNk9XRmQ0SDBLY1k5QW42M1FvU200Tk9pN20wUjkwU295V2JTVEFhc0dFcVcvRlN0R0NTcDBjdgp3bk91WXk1Uml1OWYrenRrd0JBSlEreHBMZy95ZWdyMnNTV2hRT2kvNjUvbnhLU1owQXUvcG9GamtOTW5TSGFUClBVZzM1dE1vUThNWG1oRUdsRXVkZnlrSmltUm5VUVBHMWR3Q09TdkcxY0JqZ3czVmNweGxmZlArRFlSYkRvVzUKaU50Z1Bvd25hZmpPR2V2eTNNTzBZRFRUeXJnZ01PWlpMOWZKS3lNSXdMV2EyWE9XV0ZZRXYwQ1I4Y3FtQVBxaAo4ckI2WDBhS005Z2xLcGI0YVpuM3h2U3lKMnhiZTVycllRcVRiSXZqRmYydXNwNjV3QnBQKzBFejVwcz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+
+i-01a009f9b07135098 (eks-ibc-prod-eks-ibc-prod-Node)
+aws eks --region us-east-1 update-kubeconfig --name eks-ibc-prod
+kubectl describe deployment coredns --namespace kube-system | grep Image | cut -d "/" -f 3
+
+0(ashutosh.ae.kumar@accenengprjmp01 [~])$ kubectl get nodes
+NAME                            STATUS   ROLES    AGE    VERSION
+ip-10-167-87-21.ec2.internal    Ready    <none>   381d   v1.11.9  
+ip-10-167-98-187.ec2.internal   Ready    <none>   381d   v1.11.9
+eks-ibc-prod-eks-ip-10-167
+
+kubectl set image --namespace kube-system deployment.apps/coredns \
+            coredns=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/coredns:v1.6.6-eksbuild.1
+aws eks update-cluster-version --name eks-ibc-prod --kubernetes-version 1.14 --region us-east-1
+
+aws eks update-cluster-version --name eks-ibc-prod --kubernetes-version 1.17 --region us-east-1
+
+kubectl set image daemonset.apps/kube-proxy \
+    -n kube-system \
+    kube-proxy=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/kube-proxy:v1.15.12-eksbuild.1
+	
+kubectl set image daemonset.apps/kube-proxy \
+  -n kube-system \
+  kube-proxy=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/kube-proxy:v1.16.13-eksbuild.1
+
+kubectl set image daemonset.apps/kube-proxy \
+  -n kube-system \
+  kube-proxy=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/kube-proxy:v1.17.9-eksbuild.1
+	
+ami-0fc7c80d4d288ab2c
+
+1) Create Self-managed Node Group with version 1.14 [1] (AMI - ami-0e796ccc93168da3a).
+2) Migrate applications from Managed Node Group to Self-managed Node Group [2].
+3) Delete Managed Node Group.
+4) Upgrade EKS Cluster to version 1.15 [3].
+5) Create Managed Node Group.
+6) Migrate applications from Self-managed Node Group to Managed Node Group.
+7) Delete Self-managed Node Group.
+
+[1] https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html
+[2] https://docs.aws.amazon.com/eks/latest/userguide/migrate-stack.html
+[3] https://docs.aws.amazon.com/eks/latest/userguide/update-cluster.html
+-------  aks setup
+az aks install-cli
+az aks get-credentials --resource-group ahasbx2rg --name heanopsbxkaks01
+az aks get-credentials --resource-group 109651Spoke --name cpfnomiaaiaks01
+
+az aks get-credentials --resource-group meteredprd --name azure-acpcloud1562-aks-dsw-us
+
+az aks get-credentials --resource-group AKS-kum --name ashu
+
+client ID: 0d6c9ef3-9072-40f3-af63-c2e435242e8b
+tenant ID: 6cafdd50-12af-44a6-a6ee-4038c64f56bb
+secret value: x4J-P~PqL3Km6NMG.8G3_5.4H4ZhLN2RC.
+secret ID: f2365299-c525-4188-b770-ec5531bc79bc
+
+network azure cni
+Specify IP ranges (public ip)
+Network policy  calico
+ISTO_Containers:Azure–AKS
+secret ID: 76192d4f-cd39-4663-ad7f-b894033c2732
+secret value : 6Q-6szx.FeTHH_RTkE9_2WW1VW6Va5b1_.
+client ID: 2b56f774-3301-4752-a558-c8d17d81bb20
+------ to login without key
+Download wget https://gist.githubusercontent.com/jjo/a8243c677f7e79f2f1d610f02365fdd7/raw/5af22461a27a711a2d8bae82e77af9550d9a31e2/kubectl-root-in-host.sh
+Give execute permission to file
+“Kubectl get nodes” to list nodes
+Use below command to create a pod for specific node
+./kubectl-root-in-host.sh <nodename>
+
+-------
+
+kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.3.7/components.yaml
+11:45:28 AM
+Pratap:
+https://github.com/kubernetes-sigs/metrics-server/releases
+Allow passing TLS certificate&key to kubelet client (
+
+
+/etc/eks/bootstrap.sh c-trn66 --kubelet-extra-args '--kube-reserved cpu=2000m,memory=2Gi,ephemeral-storage=1Gi --system-reserved cpu=2000m,memory=2Gi,ephemeral-storage=1Gi --eviction-hard memory.available<5Gi,nodefs.available<10%'
+
+--kubelet-extra-args '--kube-reserved cpu=250m,memory=1Gi,ephemeral-storage=1Gi --system-reserved cpu=250m,memory=0.2Gi,ephemeral-storage=1Gi --eviction-hard memory.available<0.2Gi,nodefs.available<10%'
+
+--apiserver-endpoint https://97E4410AC7B7550A3BBE2A1A47FB5AD2.sk1.us-east-1.eks.amazonaws.com --b64-cluster-ca
+
+--kubelet-extra-args '--kube-reserved cpu=2000m,memory=Gi,ephemeral-storage=1Gi --system-reserved cpu=200m,memory=2Gi,ephemeral-storage=1Gi --eviction-hard memory.available<5Gi,nodefs.available<10%'
+
+
+#!/bin/bash
+set -o xtrace
+/etc/eks/bootstrap.sh c-trn66 --kubelet-extra-args '--kube-reserved cpu=2000m,memory=2Gi,ephemeral-storage=1Gi --system-reserved cpu=2000m,memory=2Gi,ephemeral-storage=1Gi --eviction-hard memory.available<5Gi,nodefs.available<10%'
+/opt/aws/bin/cfn-signal --exit-code $? \
+--stack c-trn66-eks-worker-nodes-updated \
+--resource NodeGroup \
+--region us-east-1
+sysctl fs.inotify.max_user_watches=524288
+========================
+[root@ip-10-75-165-162 ~]# cat /etc/sysctl.conf
+fs.inotify.max_user_watches=524288
+[root@ip-10-75-165-162 ~]# sysctl -p
+fs.inotify.max_user_watches = 524288
+
+
+--kubelet-extra-args '--kube-reserved cpu=250m,memory=1Gi,ephemeral-storage=1Gi --system-reserved cpu=250m,memory=0.2Gi,ephemeral-storage=1Gi --eviction-hard memory.available<0.2Gi,nodefs.available<10%'
+
+--kubelet-extra-args '--kube-reserved cpu=2000m,memory=2Gi,ephemeral-storage=1Gi --system-reserved cpu=2000m,memory=2Gi,ephemeral-storage=1Gi --eviction-hard memory.available<5Gi,nodefs.available<10% #!/bin/bash \sysctl fs.inotify.max_user_watches=524288' 
+
+--apiserver-endpoint https://148BA6B28DED08641598A262FE653F5A.yl4.us-east-1.eks.amazonaws.com --b64-cluster-ca LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRFNE1Ea3lNVEF5TURJek1Gb1hEVEk0TURreE9EQXlNREl6TUZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBUHJoCkVMOTJsVE9vQ0pzK3B3NE1kQUhOVXpwUWhhMklZOTRqOFFJZmJNU2lYY0I5eDJBeWkwN0lydXo3VHRqRG9IRUIKUEI2NDdreTF3L1RlL0hvY3MyaDdiQlBVTjVReTh3UUk3Y2JQYmNlYUk1cjZJVnNYTmg2MG1ZYzNqZkhLUjFLTApJWmRrbmkrNVh2cUkyWm5hZWgrZVpEWWNLTFFqSE1wRWV0SVNoQzZOUUxuVVpJeTliSngycWM0S29aREFSNVZRCnFqYVFiK3RwUis2U1BkcHJHT1U0WjdXU2poQVBodmpNRFhiSWNvZEVReEppVnpZMzFmeHRkekppM3RySHRwdUQKUEJTTEpCNHNsRzJqWXl1R0tYNUZ2NUljUE10MU1ocjRub2l0OWdUblB0eXdjejFjRTZRY2U2WE16b0xLbVlWcApzeUV3VlpFRmZ6QytSUWxyaTFFQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFGZHE0QUtPS1pmV3lDRmNyb1lsTjdQY2N2T3MKa3BBUGxXcmd2MTBSQzhlRDhJQ3hmU1IrSnhiQ29iVHFZM29LditHUFBCL2xyZTNSbCtLZktSc3Q0NUM0bEJvZQpieDNZakxPZWRCdk9yNU9zRituRHEwSzc5ekRHeHRqbCtHbm9CNC9VeTZSZW9DclZQM0VqdTJtRUI4QW83VzJBCks3VTRSQWpSTEdBZDRsQk14VmkyejhlTW8ydnhaM1JLOTVWZGRZUGdDbVpaa0hmanFjZDVudFFlQmJ4UTJBY3IKTDZ3by9vUG1Lc21MQVhJNnlyOE5HdkFzcFpyUGpsdnd6R1FDQURLcWV5WnRKazdvdlNVdnNzTW1DNGpuandxdgpWTWRrQVZtV0xxSlVrenNMRDBMMnRzYU16T0twTmw4VFArOThrNUlhQWljbVBnU2d1V3YxN3YzT2REUT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+ --kubelet-extra-args '--kube-reserved cpu=2000m,memory=2Gi,ephemeral-storage=1Gi --system-reserved cpu=2000m,memory=2Gi,ephemeral-storage=1Gi --eviction-hard memory.available<5Gi,nodefs.available<10%'
+---------workspace analytics diable command
+
+az aks disable-addons -a monitoring -n MyExistingManagedCluster -g MyExistingManagedClusterRG
+az aks show --name azure-acpcloud1562-aks-dsw-us --resource-group meteredprd
+az aks disable-addons -a monitoring --name azure-acpcloud1562-aks-dsw-us --resource-group meteredprd
+------------------
+https://github.com/walidshaari/Kubernetes-Certified-Administrator
+https://walidshaari.medium.com/renewed-my-kubernetes-certified-administrator-for-cka-2020-7cd3e379e3e4
+
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: local-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 500Mi
+
+
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-pay
+  namespace: critical-space
+    
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /pay
+        pathType: Prefix
+        backend:
+          service:
+            name: pay-service
+            port:
+              number: 8080
+
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+spec:
+    containers:
+    - name: nginx
+      image: nginx:alpine
+      volumeMounts:
+      - mountPath: /var/www/html
+        name: local-pv
+    volumes:
+    - name: local-pv
+      persistentVolumeClaim:
+        claimName: local-pvc
+
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: delayed-volume-sc
+provisioner: kubernetes.io/no-provisioner
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+mountOptions:
+  - debug
+volumeBindingMode: WaitForFirstConsumer
+
+
+--------
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress
+  namespace: ingress-space
+spec:
+  type: NodePort
+  selector:
+    name: ingress-controller
+  ports:
+      # By default and for convenience, the `targetPort` is set to the same value as the `port` field.
+    - port: 80
+      targetPort: 80
+	  protocol: TCP
+	  name: http
+      # Optional field
+      # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
+      nodePort: 30080
+	- port: 443
+      targetPort: 443
+      protocol: TCP
+      name: https
+ kubectl expose deployment -n ingress-space ingress-controller --type=NodePort --port=80 targetPort=80 nodePort=30080--name=ingress
+ ---------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-wear-video
+  namespace: app-space
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /wear
+        pathType: Prefix
+        backend:
+          service:
+            name: wear-service
+            port:
+              number: 8080
+	  - path: /watch
+        pathType: Prefix
+        backend:
+          service:
+            name: video-service
+            port:
+              number: 8080
+
+
+ETCDCTL_API=3 etcdctl --endpoints=https://[127.0.0.1]:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+     --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key \
+     snapshot save /opt/snapshot-pre-boot.db
+
+ ETCDCTL_API=3 etcdctl --endpoints=https://[127.0.0.1]:2379 --cacert=/etc/kubernetes/pki/etcd/ca.crt --cert=/etc/kubernetes/pki/etcd/server.crt --key=/etc/kubernetes/pki/etcd/server.key snapshot save /opt/snapshot-pre-boot.db.
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: messaging-service
+spec:
+  selector:
+    name: messaging
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 6379
+  clusterIP: 10.244.1.7
+ 
+apiVersion: v1
+kind: Service
+metadata:
+  name: hr-web-app-service
+spec:
+  type: NodePort
+  selector:
+    app: hr-web-app
+  ports:
+      # By default and for convenience, the `targetPort` is set to the same value as the `port` field.
+    - port: 8080
+      targetPort: 8080
+      # Optional field
+      # By default and for convenience, the Kubernetes control plane will allocate a port from a range (default: 30000-32767)
+      nodePort: 30082
+------------
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-analytics
+spec:
+  capacity:
+    storage: 100Mi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteMany
+  hostPath:
+      path: /pv/data-analytics
+------------
+kubectl set image daemonset.apps/kube-proxy \
+    -n kube-system \
+    kube-proxy=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/kube-proxy:v1.17.9-eksbuild.1
+
+
+--apiserver-endpoint https://E0ECB403203D7142BD5112FDEA39B06D.gr7.us-east-1.eks.amazonaws.com --b64-cluster-ca LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUN5RENDQWJDZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJeE1UQXlOekEzTXpnd09Wb1hEVE14TVRBeU5UQTNNemd3T1Zvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTE9xCmp4TEN1TFk5RHFoa0Z4L1lhSW5WY2ZabG5MTWxobDlrVk5sTWwrU1dlMnplYzhEMC9Fbk9RSElQQWJTc1FGMngKUmtZS0F4TFFqZXVPU00wby9rbkZiUFBLejhYVDQxdm8vM1p1b0QvblJPeHFobStFMGp1Z0ptL3FUTWtHTGsxdAo3czJvQWVLUFFsbkF6UjlwaFZkQXdwaDRyUGlmNVB5dmUzaG53c3V6VzlrbnJGTEI5NkpSa2FBR1JxYlQ3OU5oCkpOMUVMalIvZjNvMkpJT2YzNFF5SkQwQmpLd0IyOVc1b2lOdjI1K09abms3U1pzbVJmWUZ5elJLU2hKMnhIVzQKMDY5ekVYK2JZZ3RGVGwwSGhFdzZUQ2pSZ3poZ3dMa01NVU5lOXEwaVVoY3IrT3MrSG1TaE1aYnVOYXVkT0VyRAprek9oczZpWmZUaGlaNHNVTlNzQ0F3RUFBYU1qTUNFd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0RRWUpLb1pJaHZjTkFRRUxCUUFEZ2dFQkFCUWtvMERXTWxobEZpSmo4UTNGYXBJejlDK0sKcHBGRnc1d0xrbnMxdVFiRFFteDVxYlZzbnovVUZOeDhrbzVvL1lnOEp3RHB6czNlN05xVUVxWGd2Wmw5Z0lZUQo5dkptVG5zVVA2MFFrcnlyaThHNG52ak5yWmJFajBXWm4wV1lVSkcxQXRQL0FGWTYxZkQwZThsdUZFUE5rV3JOCjRVYmlHZnlwOFlzV0d4QS9IOVBHd3FmQnVmVS9xZEZwSVg2YVNzZExPcjBra3B5MmZCUWxGMHRzU1FBREhMM1MKYnF6ZUZPc3Q3QjhxNHZOSk12YTJuWDNxTTgyOVE2bGM4WXFFU1lQdEhRWGh5aE0wVnVOQVRyQ0VETVYzeTBqbgpoeFVCUUlYMU1iSFhIR2VSeFRsZUlkVkR0dDVuT3lTU1FOM2V1MlZhcEZvY0d1anB0NXBNak1LSkUzYz0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+-----------
+AHAP AWS Portal link
+
+https://myapps.microsoft.com/signin/113614_936902236608_ACP_AWS_APP/4ca00460-775d-4165-b517-ec9eca4bbc45?tenantId=e0793d39-0939-496d-b129-198edd916feb
+
+CHG0691562
+EKS        : c-trn66
+AKIA5UI5ZTHAKO2PRBW6
+gnuMNbTER86huipwLHZapDpyCq41n8kctlkEpt1n
+
+aws eks --region us-east-1 update-kubeconfig --name c-trn66  
+
+1. Upgrade the Control Plane to 1.14 using the AWS CLI:
+      $ aws eks update-cluster-version --name c-trn66 --kubernetes-version 1.14 --region us-east-1
+    Update kube-proxy to 1.14.9
+    Update the VPC CNI to 1.7.5
+    Update CoreDNS to 1.6.6
+    Run tests against apps in the cluster to ensure they are still working as expected
+----------
+aws eks update-cluster-version --name c-trn66 --kubernetes-version 1.17 --region us-east-1
+
+kubectl set image daemonset.apps/kube-proxy \
+  -n kube-system \
+  kube-proxy=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/kube-proxy:v1.20.4-eksbuild.1
+  
+kubectl set image --namespace kube-system deployment.apps/coredns \
+            coredns=602401143452.dkr.ecr.us-east-1.amazonaws.com/eks/coredns:v1.8.3-eksbuild.1
+			
+kubectl logs --follow -n kube-system --selector 'k8s-app=kube-dns' | grep s3
+-------------
+aws eks --region us-east-1 update-kubeconfig --name aws-155740832893-mobeprod-eks
+
+
+[October 28, 2021, 6:54 PM] Aaron, Liberty: kubectl apply -f https://raw.githubusercontent.com/aws/amazon-vpc-cni-k8s/release-1.7/config/v1.7/aws-k8s-cni.yaml
+[October 28, 2021, 7:28 PM] Aaron, Liberty: sg-09e02afbaae67f477
+[October 28, 2021, 7:36 PM] Aaron, Liberty: $ curl -O https://raw.githubusercontent.com/awslabs/amazon-eks-ami/master/log-collector-script/linux/eks-log-collector.sh
+$ sudo bash eks-log-collector.sh
+[October 28, 2021, 7:36 PM] Aaron, Liberty: Log Collector - https://github.com/awslabs/amazon-eks-ami/tree/master/log-collector-script/linux
+---------------------------------
+
+
+aws-936902236608-eks-tmhp-prod
+aws eks --region ap-south-1 update-kubeconfig --name aws-372288435550-shsgrdldaieks01
+aws-936902236608-eks-tmhp-prod
+-----Docker 19 installation
+sudo yum install docker-ce-19.03.15-3.el7 docker-ce-cli-19.03.15-3.el7 containerd.io
+yum versionlock docker-ce-19.03.15-3.el7 docker-ce-cli-19.03.15-3.el7
+yum versionlock list
+
+kubectl version 1.23
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+chmod +x kubectl
+cp kubectl /bin/
+-------------Azcli installation
+aws eks --region ap-south-1 update-kubeconfig --name aws-372288435550-shsgrdldaieks01
+
+kubectl create secret docker-registry private-repo-secret --docker-server=ashuconreg.azurecr.io --docker-username=ashuconreg --docker-password=ww2WLdvasmpxyOmU1hskxh+vP36EJgx7 --docker-email=ashutosh8409@gmail.com
+
+rpm --import https://packages.microsoft.com/keys/microsoft.asc
+
+sh -c 'echo -e "[azure-cli]
+name=Azure CLI
+baseurl=https://packages.microsoft.com/yumrepos/azure-cli
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/azure-cli.repo'
+
+yum install azure-cli
+
+az acr build --image azure-vote-front:v1 --registry MyHelmACR --file Dockerfile .
+
+Helm
+sudo yum install epel-release
+sudo yum install snapd
+sudo systemctl enable --now snapd.socket
+sudo ln -s /var/lib/snapd/snap /snap
+sudo snap install helm3
+cp /usr/local/bin/helm /usr/bin/
+
+SubscriptionId=$(az account list --query '[0].id' -o tsv)
+. <(wget -q -O - https://raw.githubusercontent.com/MicrosoftDocs/mslearn-aks/main/infrastructure/setup/setup.sh ) -s $SubscriptionId -n learn-helm-deploy-aks --use-acr false --install-dot-net false
+
+Helm command
+helm search repo (to search for a repo)
+helm repo add azure-marketplace https://marketplace.azurecr.io/helm/v1/repo  (to add a repo)
+helm search repo
+helm repo list
+
+helm install --dry-run my-drone-webapp ./drone-webapp (to dry run helm chart)
+helm install my-drone-webapp ./drone-webapp
+helm install my-drone-webapp ./drone-webapp.tgz
+
+helm list to list chart deployed through helm
+helm delete aspnet-webapp (to delete helm chart)
+
+----
+apiVersion: v2
+name: my-app
+description: A Helm chart for Kubernetes
+...
+dependencies:
+  - name: mongodb
+    version: 10.27.2
+    repository: https://marketplace.azurecr.io/helm/v1/repo
+54.77.4.220
+--------------------
+helm dependency build ./app-chart  (to buld dependency)
+helm dependency update ./app-chart
+
+helm create azure-vote-front
+
+apiVersion: v2
+name: azure-vote-front
+description: A Helm chart for Kubernetes
+
+dependencies:
+  - name: redis
+    version: 14.7.1
+    repository: https://charts.bitnami.com/bitnami
+
+...
+# This is the version number of the application being deployed. This version number should be
+# incremented each time you make changes to the application.
+appVersion: v1
+--
+kubectl create secret generic WORDPRESS-DB-PASSWORD \
+  --from-literal=username=mysql-pass \
+  --from-literal=password='ashu123'
+kubectl create secret generic mysql-pass --from-literal=password=root
+
+az aks update -n cpgai-bst-dev-ms-aks01 -g cpgaibstdevrg --attach-acr cpgaibstdevmscnrg01  
+
+(command to map ACR TO AKS)
