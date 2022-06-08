@@ -1,0 +1,76 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: syslog
+  name: syslog-svc
+  namespace: syslog-ns
+spec:
+  ports:
+  - name: syslog-svc
+    port: 514
+    protocol: UDP
+    targetPort: 514
+  selector:
+    app: sts-syslog
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: sts-syslog
+  name: syslog
+  namespace: syslog-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sts-syslog
+  serviceName: syslog-svc
+  template:
+    metadata:
+      labels:
+        app: sts-syslog
+    spec:
+      containers:
+      - env:
+        - name: MY_HOST_IP
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: status.hostIP
+        - name: CLI_CUST_ID
+          value: ccapoc
+        - name: CLI_REGION_ID
+          value: us-east-1
+        - name: ENABLETCP
+          value: "false"
+        - name: VPC_ID
+          value: vpc-0bb51ca3475eca68a
+        - name: CLI_S3_BUCKET_NAME
+          value: sbinowcpa-env-105432-syslogs-3
+        image: xxxxxxxxxxxxxxxxxx/aip/syslog:latest
+        imagePullPolicy: Always
+        name: syslog
+        ports:
+        - containerPort: 514
+          hostPort: 514
+          name: syslog-svc
+          protocol: UDP
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities: {}
+          privileged: false
+          procMount: Default
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        volumeMounts:
+        - mountPath: /var/log
+          name: sysvol
+      imagePullSecrets:
+      - name: registry
+      volumes:
+      - name: sysvol
+        persistentVolumeClaim:
+          claimName: sysvol
