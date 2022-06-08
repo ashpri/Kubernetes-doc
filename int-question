@@ -1,0 +1,240 @@
+http://20.207.193.135:8080/
+temp1
+c8926fb8c
+(jekin)
+
+Github details
+ashutosh84091@gmail.com
+Ashu#0105
+repo: ashpri
+https://github.com/
+
+http://20.207.193.135:8080/github-webhook/
+
+git clone https://github.com/ashpri/azure-voting-app-redis
+https://docs.microsoft.com/en-us/azure/developer/jenkins/deploy-from-github-to-aks  (to deploy pod on aks using CICD)
+
+docker tag azure-vote-front <acrLoginServer>/azure-vote-front:v1
+docker tag 4d4d08c25677 aksashuacr.azurecr.io/azure-vote-front:v1
+docker push aksashuacr.azurecr.io/azure-vote-front:v1
+
+docker tag 3a54a920bb6c aksashuacr.azurecr.io/redis:6.0.8
+docker push aksashuacr.azurecr.io/redis:6.0.8
+
+sudo usermod -aG docker jenkins;
+sudo usermod -aG docker azureuser;
+sudo touch /var/lib/jenkins/jenkins.install.InstallUtil.lastExecVersion;
+sudo service jenkins restart;
+sudo cp ~/.kube/config /var/lib/jenkins/.kube/
+sudo chmod 777 /var/lib/jenkins/
+sudo chmod 777 /var/lib/jenkins/config
+--------
+# Build new image and push to ACR.
+WEB_IMAGE_NAME="${ACR_LOGINSERVER}/azure-vote-front:kube${BUILD_NUMBER}"
+docker build -t $WEB_IMAGE_NAME ./azure-vote
+docker login ${ACR_LOGINSERVER} -u ${ACR_ID} -p ${ACR_PASSWORD}
+docker push $WEB_IMAGE_NAME
+
+---------
+# Update kubernetes deployment with new image.
+WEB_IMAGE_NAME="${ACR_LOGINSERVER}/azure-vote-front:kube${BUILD_NUMBER}"
+kubectl set image deployment/azure-vote-front azure-vote-front=$WEB_IMAGE_NAME
+
+----------
+
+Jenkins instance needs Docker installed and configured and kubectl.
+
+Azure Container Registry Task "Jenkins plug-in to send a docker-build request to Azure Container Registry."
+Azure Container Service  "Jenkins plug-in to deploy configurations to Azure Container Service (AKS)."
+Azure Credential "Jenkins plug-in to manage Azure credentials."
+----------CD
+https://docs.microsoft.com/en-us/azure/devops/pipelines/release/integrate-jenkins-pipelines-aks?view=azure-devops
+
+Access to a Jenkins server with Maven and the VSTS plugin configured. If you have not yet created a Jenkins server, see Create a Jenkins main on an Azure Virtual Machine. Also, the following Jenkins plugins must be installed:
+
+VS TEAM SERVICES CONTINUOUS DEPLOYMENT PLUGIN. 
+You can find additional information about the TFS plugin here.
+Config File Provider plugin. 
+You can find additional information about the Config File plugin here.
+Maven Integration plugin. 
+You can find additional information about the Maven Integration plugin here.
+--------------
+
+empname empsalary 
+emp1     1000
+emp2     2000
+emp3     5000
+emp4     4000
+emp5     3000
+
+
+
+#! /bin/bash
+
+echo "enter the file name or path"
+read $0
+
+salmax = cat file |cut $2|sort 
+
+if [ $1 =="max||MAX" ]
+echo "resource and salary of max" 
+cat file|grep salmax[0] 
+echo "resource and salary of min" 
+cat file|grep salmax[4] 
+
+github.com/DeekshithSN/kubernetes/tree/master/deployment-strategies
+
+AKS Cluster launch
+Ashudemo  (resource group)
+Central India  (region)
+
+virtal n/w name:
+virtualnetwork
+Central India  (region)
+ipv4 address space 10.168.0.0/21
+
+NWsub-1 (subnet)
+10.168.0.0/22 cidr
+NWsub-2 (subnet)
+10.168.1.0/25
+
+AKS Cluster launch
+Ashudemo  (resource group)
+Central India  (region)
+clustername: ashuaks
+cluster present configuration dev/test
+Availability zone: None
+kubernetes version: 1.21
+VM Size: D2as_v5
+scale method: manual
+Nodecount: 2
+Nodepool: agentpool
+RBAC: FALSE
+Network configuration: Azure CNI
+virtual network: virtualnetwork
+subnet: NWsub-1
+kubernetes service range: 20.0.0.0/16
+kubernetes-dns-service-ip-range: 20.0.0.10
+docker bridge range: 172.17.0.1/16
+dns:ashuaks-dns
+Network policy: calico
+Azure policy :disable
+
+terraform apply -var="resource_group_name=Ashudemo" -var="cluster_name=ashuaks" -var="kubernetes_version=1.21" -var="node_resource_group=nodepool" -var="vnet_subnet_id=NWsub-1"
+
+terraform plan -var="resource_group_name=Ashudemo" -var="region=Central India" -var="cluster_name=ashuaks" -var="kubernetes_version=1.21" -var="node_resource_group=nodepool" -var="vnet_subnet_id=33be2155-29ff-411d-a9a7-98b8f97610fd"
+terraform apply -var="resource_group_name=Ashudemo" -var="region=Central India" -var="cluster_name=ashuaks" -var="kubernetes_version=1.21" -var="node_resource_group=nodepool" 
+
+terraform plan -var="resource_group_name=Ashudemo"  -var="cluster_name=ashuaks" -var="kubernetes_version=1.21" -var="node_resource_group=nodepool" 
+
+terraform apply -var="resource_group_name=Ashudemo"  -var="cluster_name=ashuaks" -var="kubernetes_version=1.21" -var="node_resource_group=nodepool" -auto-approve
+
+cd /root/data01/terraform
+git clone https://github.com/ashpri/terraformaks/tree/main
+
+https://github.com/ashpri/azure-voting-app-redis/
+https://github.com/ashpri/azure-voting-app-redis.git
+
+az account set --subscription="784ad923-9005-4c46-a47a-ff5cf76bdb6d"
+az login --service-principal -u e15b375a-d9c7-46dc-83c6-0c9dc7b874ba -p Yiq8Q~dG1gjEVN~gNAhjxwZsIuN7Va5tLJ6TkaTN --tenant 2bdef24e-2c9e-46f0-a4df-fb0d33e426de
+ az login --service-principal -u CLIENT_ID -p CLIENT_SECRET --tenant TENANT_ID
+
+-----------------------------------------------
+public IP:	20.207.193.135
+username: azureuser
+
+default         azure-vote-front                  LoadBalancer   20.0.74.108    20.207.82.241   80:32108/TCP   
+NAMESPACE       NAME                              TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)
+
+
+
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=3.0.0"
+    }
+  }
+}
+
+# Configure the Microsoft Azure Provider
+provider "azurerm" {
+  features {}
+}
+
+-----------------------------------------------
+az aks get-credentials --resource-group Ashudemo --name ashuaks
+az aks update -n ashuaks -g Ashudemo --attach-acr aksashuacr
+
+sudo docker login aksashuacr.azurecr.io
+sudo docker push aksashuacr.azurecr.io/node-web-app 
+
+docker  push IMAGE a439dab802bc aksashuacr.azurecr.io/node-web-app/k8s-deployment-strategies
+docker tag a439dab802bc aksashuacr.azurecr.io/k8s-deployment-strategies
+docker push aksashuacr.azurecr.io/k8s-deployment-strategies
+-------
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app
+  namespace: bluegreen
+  labels:
+    app: my-app
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: my-app
+	version: v1.0.0
+--------
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app
+  labels:
+    app: my-app
+  namespace: bluegreen
+spec:
+  type: NodePort
+  ports:
+  - name: http
+    port: 80
+    targetPort: http
+
+  # Note here that we match both the app and the version
+  selector:
+    app: my-app
+    version: v1.0.0
+--------------
+kubectl create secret docker-registry regrec \
+    --namespace bluegreen \
+    --docker-server=aksashuacr.azurecr.io \
+    --docker-username=aksashuacr \
+    --docker-password=fklrhulvuvN7Rk5McrmXN=kCQczU6oIC
+-------
+kubectl apply -f azure-vote-all-in-one-redis.yaml
+	
+------istio
+https://csa-ocp-ger.github.io/unicorn/challenges.istio.1.sm-installation.html
+
+https://dtag.webex.com/dtag/j.php?MTID=mb136f69da96301f49d872db5a16bf796
+
+https://ea.zoom.us/j/98912952187?pwd=SW5hd0IJNEE4bi9tWThYbW5STDQ1UT09
+
+bdc11.id.assetteam@accenture.com
+
+echo "# ansible" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin https://github.com/ashpri/ansible.git
+git push -u origin main
+
+git remote add origin https://github.com/ashpri/ansible.git
+git branch -M main
+git push -u origin main
+--------------------
