@@ -1,0 +1,343 @@
+
+systemctl stop sssd >/dev/null 2>&1
+rm -rf /var/lib/sss/db/*
+rm -rf /var/lib/sss/mc/*
+
+
+
+----------------------------
+docker ps -a
+docker ps
+docker start id
+docker exec -ti id /bin/bash
+docker exec -ti 8f8f1635dd0b /bin/bash
+
+
+----------------------
+[root@cooeubdpginag01 ~]# iptables -L
+[root@cooeubdpginag01 ~]# cat /etc/yum.conf
+[root@cooeubdpginag01 ~]# yum repolist
+[root@cooeubdpginag01 ~]# yum clean all
+[root@cooeubdpginag01 ~]# cd /etc/yum.repos.d/
+[root@cooeubdpginag01 yum.repos.d]# yum cleanall
+[root@cooeubdpgidse03 yum.repos.d]# rm -rf /var/cache/yum
+[root@cooeubdpginag01 yum.repos.d]# yum repolist
+
+-------------------------------------------------------
+$ wget https://download2.rstudio.org/rstudio-server-rhel-1.1.383-x86_64.rpm
+$ sudo yum install --nogpgcheck rstudio-server-rhel-1.1.383-x86_64.rpm
+
+
+yum install bzip2
+bunzip2 ap-kernelmodule.tar.bz2
+tar -xvf ap-kernelmodule.tar
+yum install libX11.so.6
+./build.sh
+
+
+yum list gcc
+yum list bzip2
+yum list kernel-devel
+yum list kernel
+
+
+
+
+sed -i '/12345678/c\add_field => [ "vpc_id", "vpc-41aba339" ]' /etc/logstash/conf.d/*.conf
+sed -i '/us-east-1/c\add_field => [ "region_id", "us-east-1" ]' /etc/logstash/conf.d/*.conf 
+
+sed -i '/ABC/c\add_field => [  "cust_id", "citizendev" ]' /etc/logstash/conf.d/*.conf
+
+
+
+cd /etc/yum.repos.d/  (to increase the repocount)
+ll
+yum clean all
+rm -rf /var/cache/yum
+reboot
+
+----
+https://s3.amazonaws.com/software-installable-bin/EPP_WINDOWS_NEWVER/AIP-THOMASCOOKPRD.zip 
+To free cache memory
+free && sync && echo 3 > /proc/sys/vm/drop_caches && free
+
+
+--------
+
+---------------------sssd cache cleanup
+service sssd stop >/dev/null 2>&1
+
+rm -rf /var/lib/sss/db/* ##Clean SSSD cache dirs
+
+rm -rf /var/lib/sss/mc/* ##Clean SSSD cache dirs
+
+service sssd start 
+Ashu\#0105
+net ads join -U ashutosh.ae.kumar -d1 
+
+net ads keytab create –U ashutosh.ae.kumar -P Ashu\#0105
+klist -k -t /etc/krb5.keytab
+
+start all the services 
+----------------------------
+
+
+setfacl -m u:tecmint1:rw /tecmint1/example
+
+setfacl -Rdm u:vishu:rx /tur
+
+R=recursive 
+d=for default
+m=modify
+
+[root@ip-172-31-28-183 /]# getfacl tur
+# file: tur
+# owner: root
+# group: root
+user::rwx
+user:ashu:rwx
+user:vishu:r-x
+group::r-x
+mask::rwx
+other::r-x
+default:user::rwx
+default:user:ashu:rwx
+default:user:vishu:r-x
+default:group::r-x
+default:mask::rwx
+default:other::r-x
+
+
+setfacl -b /tur  (to remove all connections)
+
+
+-------------------------------------------------
+awk -F\' '$1=="menuentry " {print i++ " : " $2}' /etc/grub2.cfg 
+grub2-editenv list 
+saved_entry=1 
+grub2-set-default 1
+reboot 
+
+-------------(How to encrypt root disk)a
+{
+"delete": "no",
+"region": [
+"eu-west-3"
+],
+"force": [
+"i-0c61ea127e9776367",
+"i-0c61ea127e9776363",
+"i-0c61ea127e9459361",
+"i-0c61ea127e9776365"
+]
+} 
+---------------
+8095913171 kartik cook
+postgres bash file creation
+
+echo ". /opt/PostgresPlus/9.5AS/pgplus_env.sh" >> /etc/profile
+echo ". /opt/PostgresPlus/9.5AS/pgplus_env.sh" >> .bash_profile 
+
+b8edbb767905636906778781188727
+
+to increase timeout
+------
+vi /etc/sshd/sshd_conf.sh
+ClientAliveInterval 120
+ClientAliveCountMax 720
+
+ClientAliveInterval 300
+ClientAliveCountMax 0
+
+systemctl list-units |grep failed
+
+cat aipsudoers
+##################################
+## BEGIN Sudo Allowance per policy
+##################################
+%administrators ALL=(root) NOPASSWD: ALL
+%domain\x20admins ALL=(root) NOPASSWD: ALL
+%enterprise\x20admins ALL=(root) NOPASSWD: ALL
+%linux_root_admin ALL=(root) NOPASSWD: ALL
+%linux_root ALL=(root) NOPASSWD: ALL
+%aip_grp_globalsshaccess ALL=(root) NOPASSWD: ALL
+##################################
+## END Sudo Allowance per policy
+##################################
+
+ACN\GRP_SERVER_ADMINS  (administrator)
+ACN\GRP_SERVER_OPERATORS   DOMAIN USER
+-----------------------------------Symentic removal commands
+rm -f /data01/etc/init.d/autoprotect
+rm -f /data01/etc/init.d/symcfgd /data01/etc/init.d/rtvscand 
+rm -f /data01/etc/init.d/smcd
+rm -f /data01/etc/ld.so.conf.d/symav.conf
+rm -f /data01/etc/symantec/VPREG*.*
+rm -rf /data01/etc/symantec/NLS
+rm -rf /data01/opt/Symantec/symantec_antivirus
+rm -rf /data01/opt/Symantec/autoprotect
+rm -rf /data01/root/sav*install.log*
+rm -rf /data01/var/lock/subsys/symcfgd /data01/var/lock/subsys/rtvscand 
+rm -rf /data01/var/symantec/Quarantine
+rm -rf /data01/var/symantec/Logs
+
+ 
+
+WARNING: Follow the next step only if the conditions that are described in the step are met. These instructions affect files that other Symantec products use. If you delete a file that another Symantec product uses, that product must be removed and installed again.
+
+ 
+
+If Symantec AntiVirus for Linux is the only Symantec program that is installed, type each of the following commands, and then press Enter:
+
+ 
+
+rm -rf /data01/var/tmp/I2_LDVP.TMP
+rm -rf /data01/var/symantec /data01/var/run/symantec
+rm -rf /data01/opt/Symantec
+rm -f /data01/etc/Symantec.conf
+rm -rf /data01/etc/symantec
+-----------
+
+------
+acneu\GRP_SERVER_ADMINS
+acneu\GRP_SERVER_OPERATORS   DOMAIN USER
+ACN\GRP_SERVER_ADMINS  (administrator)
+ACN\GRP_SERVER_OPERATORS   DOMAIN USER
+
+Qualys - ACP (Activation, Cutomer)
+E7E5F786-FC2C-47F5-B394-935985E3D5D9 AF433332-5B18-7BE7-E040-10AC130451E8
+
+
+Qualys - CPC 
+CustomerId={af433332-5b18-7be7-e040-10ac130451e8} ActivationId={50e0f13e-f88f-4b0f-8422-eeb5815e8b68}
+
+python 3.7 installation link
+https://tecadmin.net/install-python-3-8-on-centos/
+ln -s /usr/local/bin/python3.8 /usr/bin/python3.8
+
+sudo /usr/local/bin/python3.8 awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
+
+ln -s /usr/local/bin/aws  /usr/bin/aws
+pip package
+python3.7 -m pip install pip
+
+ln -s /usr/local/bin/python3.8 /usr/bin/python3.8
+
+https://www.python.org/ftp/python/3.7.4/Python-3.7.4.tgz
+
+https://mran.microsoft.com/download
+
+conda list anaconda$
+jupyter notebook
+
+/etc/profile.d)$ cat anaconda.sh
+export PATH=/opt/anaconda/bin/:$PATH
+
+(base) 0(root@ovmeupppaipyt01 /etc/profile.d)$ cat condanew.sh
+export PATH=/data01/anaconda3/bin/:$PATH
+
+PATH=$PATH:$HOME/anaconda3/bin
+
+ $PATH
+/opt/anaconda/bin/:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/home/aip_ashutosh.ae.kumar/.local/bin:/home/aip_ashutosh.ae.kumar/bin: No such file or directory
+
+sss_cache -E
+
+
+----------create swap space
+dd if=/dev/zero of=/swapfile bs=1M count=24552
+
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+make entry in fstab
+/swapfile		swap	swap	defaults	0 0 
+-----remove swap
+swapoff -v /root/swapfile1
+rm /swapfile1
+------------
+cat /etc/rc.d/rc.local
+
+touch /var/lock/subsys/local
+#!/bin/bash
+#exit 0
+-------------------Rhel version lock
+awk -F\' /^menuentry/{print\$2} /etc/grub2.cfg
+vi /boot/grub2/grubenv
+
+cat /boot/grub2/grubenv |grep saved
+yum downgrade redhat-release
+yum versionlock redhat-release-server-7.8-2.el7.x86_64
+grub2-set-default 1(which kernel version it has to take 0 or 1)
+cat /etc/redhat-release
+
+yum 
+----------
+
+crontab -e
+@reboot /data/talendscript.sh
+
+#! /bin/bash
+
+sudo -S su - talenduser -c "bash /data/TalendTools-7.0.1/cmdline/start_cmdline.sh"
+sleep 5
+sudo -S su - talenduser -c "bash /data/TalendTools-7.0.1/jobserver/start_jobserver.sh"
+
+
+#! /bin/bash
+
+sudo -S su - talenduser -c "bash /data01/TalendTools-7.2.1/cmdline/start_cmdline.sh"
+sleep 5
+sudo -S su - talenduser -c "bash /data01/TalendTools-7.2.1/jobserver/start_jobserver.sh"
+sleep 5
+sudo -S su - talenduser -c "bash /data01/TalendTools-7.2.1/tac/start_tac.sh"
+
+-------------------------- 
+redhat docker-ce base url:
+https://forums.docker.com/t/docker-ce-stable-x86-64-repo-not-available-https-error-404-not-found-https-download-docker-com-linux-centos-7server-x86-64-stable-repodata-repomd-xml/98965/5
+
+-----
+pvcreate /dev/nvme3n1
+vgextend vgroot /dev/nvme3n1
+vgs
+lvextend -L +179.99G /dev/mapper/vgroot-var
+xfs_growfs /dev/mapper/vgroot-var
+-------------------TO remove a package
+yum whatprovides rhnreg_ks (it will show all depeneded package)
+yum search --showduplicates systemd-libs  (it will show all duplicates packages)
+rpm -e --nodeps systemd-libs-219-78.el7_9.2.x86_64 (to remove rpm package )
+
+http://mirror.centos.org/centos/7/os/x86_64/Packages/m2crypto-0.21.1-17.el7.x86_64.rpm
+
+
+
+----------------------Epp status
+
+/opt/Symantec/sdcssagent/AMD/tools/sav info -d
+
+/opt/Symantec/sdcssagent/AMD/tools/sav info -p
+/usr/lib/symantec/status.sh
+--------------------------temporary add route inside linux server
+route add -net 10.254.0.0/16 (acn) gw 10.169.57.1(internet gateway) dev eth1
+
+0(root@somnoccpaidst01 /etc/sysconfig/network-scripts)$ cp ifcfg-eth0 ifcfg-eth1
+0(root@somnoccpaidst01 /etc/sysconfig/network-scripts)$ vi ifcfg-eth1  (change etho details to eth1 and comment hardware address)
+0(root@somnoccpaidst01 /etc/sysconfig/network-scripts)$ systemctl restart network
+
+1(root@somnoccpaidst01 /etc/sysconfig/network-scripts)$ cat route-eth1 (create this file to permanent add eth1)
+10.254.0.0/16 via 10.169.57.1 dev eth1
+0(root@somnoccpaidst01 /etc/sysconfig/network-scripts)$ systemctl restart network
+0(root@somnoccpaidst01 /etc/sysconfig/network-scripts)$ reboot
+----------------------------------------------Azure rhel registration
+az vm update --resource-group ovmeupprdrrsg01 --name ovmeupprdisft01 --license-type RHEL_BYOS
+az vm get-instance-view --resource-group AHADEVRG --name heanophhaiite01 | grep licenseType
+
+Rhel validation command
+curl --insecure --output katello-ca-consumer-latest.noarch.rpm https://accenengprsat02.accentureanalytics.com/pub/katello-ca-consumer-latest.noarch.rpm
+yum localinstall katello-ca-consumer-latest.noarch.rpm -y
+subscription-manager clean
+subscription-manager register --org=ACN_USA --activationkey=acn-usa-key
+-----------------------------
+az vm update --resource-group INPEX-RES-GRP --name inpausaozimsq02 --license-type RHEL_BYOS
+az vm get-instance-view --resource-group INPEX-RES-GRP --name inpausaozimsq02 | grep licenseType
+
